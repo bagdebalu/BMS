@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSACTION MANAGEMENT</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+    <!-- custom css link -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    
+    <!-- home section starts  -->
+    <section class="home" id="home">
+        <div class="content">
+            <!--<h3>welcome to TMS</h3>
+            <p>efficient transaction management</p>
+            <a href="#" class="btn">fill, select and process</a>-->
+        </div>
+
+        <!--<div class="controls">
+            <span class="img-btn active" src="i2.png"></span>
+            <span class="img-btn" src="i2.png"></span>
+            <span class="img-btn" src="i2.png"></span>
+            <span class="img-btn" src="i2.png"></span>
+        </div>-->
+
+        <div class="img-container">
+            <img width="80px" height="70px" src="i10.jpg" id="img-slider">
+        </div>
+    </section>
+    <!-- home section ends  -->
+
+
+<!-- transaction section starts -->
+<section class="transac" id="transac">
+    <h1 class="heading">
+        <span>t</span>
+        <span>r</span>
+        <span>a</span>
+        <span>n</span>
+        <span>s</span>
+        <span>a</span>
+        <span>c</span>
+        <span>t</span>
+        <span>i</span>
+        <span>o</span>
+        <span>n</span>
+        <span class="space"></span>
+        <span>m</span>
+        <span>a</span>
+        <span>n</span>
+        <span>a</span>
+        <span>g</span>
+        <span>e</span>
+        <span>m</span>
+        <span>e</span>
+        <span>n</span>
+        <span>t</span>
+    </h1>
+
+    <div class="row">
+        <!--<div class="image">
+            <img src="i1.jpg" alt="">
+        </div>-->
+
+        <form action="">
+            <div class="form-grid">
+            <div class="inputBox">
+                <h3>Transaction ID</h3>
+                <input type="text" id="transactionId" placeholder="Enter an ID of transaction" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>Customer SSN ID</h3>
+                <input type="text" id="ssnId" placeholder="Enter customer SSN ID" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>Customer Name</h3>
+                <input type="text" placeholder="Enter your name" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>Account ID</h3>
+                <input type="text" id="accountId" placeholder="Enter your Account ID" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>Aadhar Card No</h3>
+                <input type="text" id="aadharNo" placeholder="Enter your aadhar number" maxlength="12" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>PAN Card No</h3>
+                <input type="text" id="panNo" placeholder="Enter your PAN number" maxlength="10" required>
+            </div>
+            
+            <div class="inputBox">
+                <h3>Address</h3>
+                <input type="text" placeholder="Enter your address" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>Date</h3>
+                <input type="date" id="transactionDate" placeholder="Enter date of transaction" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>Contact Number</h3>
+                <input type="text" id="contactNo" maxlength="10" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="inputBox">
+                <h3>Mode of Transaction</h3>
+                <select name="" id="transactionMode">
+                    <option value="Online">Online</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                </select>
+            </div>
+
+            <div class="inputBox">
+                <h3>Amount</h3>
+                <input type="number" id="transactionAmount" placeholder="Enter an amount for transaction" required>
+            </div>
+        
+            <div class="inputBox">
+                <h3>Credit / Debit</h3>
+                <select name="" id="transactionType">
+                    <option value="Credit">Credit</option>
+                    <option value="Debit">Debit</option>
+                </select>
+            </div>
+
+        </div>
+
+        <input type="submit" onclick="processTransaction(event)" class="btn" value="Process Transaction">
+
+        </form>
+    </div>
+</section>
+<!-- transaction section ends  -->
+
+    <!-- Success & Error Pop-ups -->
+    <div id="successPopup" class="popup">✅ Transaction Successful!</div>
+    <div id="errorPopup" class="popup error-popup">❌ Transaction Failed!</div>
+
+    <!-- Footer -->
+    <div class="footer">© 2025 Transaction Processing System | All Rights Reserved</div>
+
+    <script>
+        function processTransaction(event) {
+            event.preventDefault();  // ❗ Prevents Form Submission (Data Won't Disappear)
+        
+            let transactionId = document.getElementById("transactionId").value.trim();
+            let ssnId = document.getElementById("ssnId").value.trim();
+            let accountId = document.getElementById("accountId").value.trim();
+            let amount = document.getElementById("transactionAmount").value.trim();
+            let transactionMode = document.getElementById("transactionMode").value;
+            let transactionType = document.getElementById("transactionType").value;
+        
+            // Reset previous error highlights
+            document.querySelectorAll("input, select").forEach(field => {
+                field.style.border = "1px solid #ccc";
+            });
+        
+            // ❌ Check for Empty Fields
+            if (!transactionId || !ssnId || !accountId || !amount || !transactionMode || !transactionType) {
+                showPopup("❌ Invalid Input! Fill all required fields.", "errorPopup");
+                highlightEmptyFields();
+                return;
+            }
+        
+            // ❌ Validate Amount (0 or Negative)
+            if (isNaN(amount) || parseFloat(amount) <= 0) {
+                showPopup("❌ Enter a valid transaction amount!", "errorPopup");
+                alert("❌ Invalid Transaction Amount! Amount should be greater than 0.");
+                document.getElementById("transactionAmount").style.border = "2px solid red";
+                return;
+            }
+        
+            // ❌ Validate SSN Format (Must be exactly 9 digits)
+            if (!/^\d{9}$/.test(ssnId)) {
+                showPopup("❌ Invalid SSN! Must be 9 digits.", "errorPopup");
+                alert("❌ Invalid SSN Format! It should be exactly 9 digits.");
+                document.getElementById("ssnId").style.border = "2px solid red";
+                return;
+            }
+        
+            // ✅ If All Checks Pass
+            showPopup("✅ Transaction Successful!", "successPopup");
+            alert("✅ Transaction Successful!");
+        
+            // ❗ Form data persists (No reset)
+        }
+        
+        // Show Popup for 3+ Seconds
+        function showPopup(message, popupId) {
+            let popup = document.getElementById(popupId);
+            popup.innerText = message;
+            popup.style.display = "block";
+            popup.style.opacity = "1";
+        
+            // Fade out effect
+            setTimeout(() => {
+                popup.style.opacity = "0";
+                setTimeout(() => { popup.style.display = "none"; }, 500);
+            }, 3000);  // ⏳ Alert & Popup stay for 3 seconds
+        }
+        
+        // Highlight Empty Fields in Red
+        function highlightEmptyFields() {
+            document.querySelectorAll("input, select").forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.border = "2px solid red";
+                }
+            });
+        }
+        
+        
+    </script>
+
+    
+
+</body>
+</html>
